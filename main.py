@@ -8,7 +8,7 @@ if not os.path.exists("model"):
      print ("Please download the model from https://alphacephei.com/vask/models and unpack as 'model' in the current folder.")
      exit (1)
  
-model = Model("model")
+model = Model('model')
 rec = KaldiRecognizer(model, 16000)
 
 p = pyaudio.PyAudio()
