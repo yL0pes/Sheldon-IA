@@ -5,6 +5,7 @@ import os
 import pyaudio
 import json
 import pyttsx3
+import core
 
 #Síntese de Fala
 engine = pyttsx3.init()
@@ -40,4 +41,6 @@ while True:
               text = result['text']
               
               print(text)
-              speak(text)
+              
+              if text == 'que horas são' or text == 'me diga as horas':
+                   speak(core.SystemInfo.get_time())
