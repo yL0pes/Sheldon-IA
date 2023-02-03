@@ -3,6 +3,19 @@
 from vosk import Model, KaldiRecognizer
 import os
 import pyaudio
+import json
+import pyttsx3
+
+#Síntese de Fala
+engine = pyttsx3.init()
+
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[-2].id)
+
+def speak(text):
+     engine.say(text)
+     engine.runAndWait()
+     
 
 if not os.path.exists("model"):
      print ("Please download the model from https://alphacephei.com/vask/models and unpack as 'model' in the current folder.")
@@ -16,12 +29,15 @@ stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, fram
 stream.start_stream()  
 
 while True:
-    data = stream.read(4000)
+    data = stream.read(4000, exception_on_overflow=False)
     if len(data) == 0:
          break
     if rec.AcceptWaveform(data):
-        print(rec.Result())
-    else:
-         print(rec.PartialResult())
-
-print(rec.FinalResult())
+         result = rec.Result()
+         result = json.loads(result)
+         
+         if result is not None:
+              text = result['text']
+              
+              print(text)
+              speak(text)
